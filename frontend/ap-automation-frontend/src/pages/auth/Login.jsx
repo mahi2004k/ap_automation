@@ -58,7 +58,10 @@ function Login() {
 
             // Store authentication data through Context
 
-            login(response.data.token);
+            login(
+    response.data.accessToken,
+    response.data.refreshToken
+);
 
 
             toast.success(

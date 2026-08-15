@@ -2,8 +2,10 @@ package com.ap_automation.service.impl;
 
 import com.ap_automation.dto.request.LoginRequest;
 import com.ap_automation.dto.request.RegisterRequest;
+import com.ap_automation.dto.response.AuthResponse;
 import com.ap_automation.dto.response.LoginResponse;
 import com.ap_automation.dto.response.RegisterResponse;
+import com.ap_automation.entity.RefreshToken;
 import com.ap_automation.entity.User;
 import com.ap_automation.enums.Role;
 import com.ap_automation.exception.EmailAlreadyExistsException;
@@ -11,6 +13,7 @@ import com.ap_automation.exception.InvalidCredentialsException;
 import com.ap_automation.repository.UserRepository;
 import com.ap_automation.security.JwtService;
 import com.ap_automation.service.AuthService;
+import com.ap_automation.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +32,8 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final JwtService jwtService;
+
+    private final RefreshTokenService refreshTokenService;
 
     @Override
     public RegisterResponse register(RegisterRequest request){
@@ -56,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public LoginResponse login(LoginRequest request){
+    public AuthResponse login(LoginRequest request){
 
         try {
             authenticationManager.authenticate(
@@ -81,11 +86,15 @@ public class AuthServiceImpl implements AuthService {
                         .roles(user.getRole().name())
                         .build();
 
-        String token = jwtService.generateToken(userDetails);
+        String accessToken =
+                jwtService.generateToken(userDetails);
 
-        return LoginResponse.builder()
-                .token(token)
-                .message("Login Successful")
-                .build();
+        RefreshToken refreshToken =
+                refreshTokenService.createRefreshToken(user);
+
+        return new AuthResponse(
+                accessToken,
+                refreshToken.getToken()
+        );
     }
 }
