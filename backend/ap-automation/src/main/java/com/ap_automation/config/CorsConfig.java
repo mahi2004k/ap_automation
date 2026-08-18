@@ -21,7 +21,8 @@ public class CorsConfig {
                 List.of(
                         "http://localhost:5173",
                         "http://localhost:5174",
-                        "http://13.234.76.77:5173"
+                        "http://13.234.76.77:5173",
+                        "https://mahesh-ap.duckdns.org"
                 )
         );
 
