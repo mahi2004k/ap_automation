@@ -1,0 +1,49 @@
+# =========================================================
+# AP Automation - Git Ignore
+# =========================================================
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Java / Maven
+target/
+*.class
+
+# Maven wrapper generated files
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse / STS
+.classpath
+.project
+.settings/
+.factorypath
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Build directories
+build/
+
+# VS Code
+.vscode/
+
+# Application uploads
+uploads/
+!uploads/.gitkeep
+
+# Logs
+*.log
