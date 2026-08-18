@@ -30,7 +30,7 @@ function Navbar() {
         >
 
             <span className="navbar-brand">
-                AP Automation System
+                AP Automation
             </span>
 
 

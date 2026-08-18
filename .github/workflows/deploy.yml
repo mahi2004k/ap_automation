@@ -17,20 +17,39 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+
           script: |
             set -e
 
             cd ~/ap_automation
 
+            echo "======================================"
             echo "Pulling latest code..."
-            git pull origin main
+            echo "======================================"
 
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "======================================"
+            echo "Stopping old containers..."
+            echo "======================================"
+
+            docker compose down --remove-orphans || true
+
+            echo "======================================"
             echo "Building and starting containers..."
-            docker compose up -d --build
+            echo "======================================"
 
+            docker compose up -d --build --remove-orphans
+
+            echo "======================================"
             echo "Removing unused Docker images..."
+            echo "======================================"
+
             docker image prune -f
 
+            echo "======================================"
             echo "Deployment completed!"
+            echo "======================================"
 
             docker compose ps
